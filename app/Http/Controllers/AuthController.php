@@ -6,18 +6,24 @@ use Exception;
 use App\Models\User;
 use App\Rules\EmailRule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller {
     public function signup(Request $req) {
-        // dump($req);
         try {
             $req->validate([
                 "name" => ['required', 'string'],
+                "username" => ['required','min:5','max:12','string','unique:'. User::class],
                 "email" => ['required', 'string', 'email', new EmailRule(), 'unique:' . User::class],
                 "password" => ['required', 'min:6']
             ]);
             $newUser = $req->all();
+            
+            // dump($newUser);
+
+            $newUser['username'] = Str::start($newUser['username'],'@');
             $newUser['password'] = bcrypt($newUser['password']);
+
             $newUser = User::create($newUser);
 
             //  Received token for automatic login after signup.
