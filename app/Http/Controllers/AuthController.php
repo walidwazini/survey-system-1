@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Exception;
 use App\Models\User;
 use App\Rules\EmailRule;
@@ -13,15 +14,15 @@ class AuthController extends Controller {
         try {
             $req->validate([
                 "name" => ['required', 'string'],
-                "username" => ['required','min:5','max:12','string','unique:'. User::class],
+                "username" => ['required', 'min:5', 'max:12', 'string', 'unique:' . User::class],
                 "email" => ['required', 'string', 'email', new EmailRule(), 'unique:' . User::class],
                 "password" => ['required', 'min:6']
             ]);
             $newUser = $req->all();
-            
+
             // dump($newUser);
 
-            $newUser['username'] = Str::start($newUser['username'],'@');
+            $newUser['username'] = Str::start($newUser['username'], '@');
             $newUser['password'] = bcrypt($newUser['password']);
 
             $newUser = User::create($newUser);
@@ -44,13 +45,23 @@ class AuthController extends Controller {
 
     public function login(Request $request) {
         try {
-            $request->validate([
-                "email" => ['required', 'string', 'email', new EmailRule()],
-                'password' => ['required', 'min:6'],
-            ]);
+            if (!empty($request['email'])) {
+                $request->validate([
+                    "email" => ['required', 'string', 'email', new EmailRule()],
+                    'password' => ['required', 'min:6'],
+                ]);
+            } else if (empty($request['email'])) {
+                // Make sure at frontend, user didn't put @ at start
+                $request['username'] = Str::start($request['username'], '@');
+
+                $request->validate([
+                    "username" => ['required', 'string'],
+                    'password' => ['required', 'min:6'],
+                ]);
+            }
 
             if (!auth()->attempt($request->all())) {
-                throw new Exception('Email / Password Mismatch');
+                throw new Exception('Email/Username or Password Mismatch');
             }
 
             return response()->json([
@@ -62,6 +73,19 @@ class AuthController extends Controller {
                 'message' => $th->getMessage(),
             ], 400);
         }
+    }
+
+    public function logout() {
+        
+        auth()->user()->currentAccessToken()->delete();
+
+        // $currentUser = Auth::user();
+        // $currentUser->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Succesfully logout.',
+            'user' => auth()->user()
+        ]);
     }
 
 }

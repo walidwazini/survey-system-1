@@ -25,7 +25,11 @@ Route::get('/',function(){
     return response()->json(['message' => 'Welcome to Survey System API.']);
 });
 
+
+Route::middleware('auth:sanctum')->get('/auth/logout',[AuthController::class,'logout']);
+
 Route::group(['prefix' => '/auth'], function() {
     Route::post('/signup', [AuthController::class,'signup']);
     Route::post('/login', [AuthController::class,'login']);
+    // Route::get('/logout', [AuthController::class,'logout']);
 });
