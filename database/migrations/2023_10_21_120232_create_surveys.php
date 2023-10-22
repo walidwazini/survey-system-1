@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             // $table->string('category');
+            $table->integer('num_of_question')->default(0);
             $table->string('image', 255)->nullable();
             $table->string('slug', 1000);
             $table->timestamps();
