@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('survey_id')->nullable();
             $table->integer('order')->nullable();
             $table->text('question_text')->nullable();
             $table->boolean('isMandatory')->default(false);
