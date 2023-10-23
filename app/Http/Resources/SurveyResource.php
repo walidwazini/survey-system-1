@@ -17,7 +17,9 @@ class SurveyResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'title' => $this->title,
+            'description' => $this->description,
+            'num_of_question' => $this->num_of_question,
             'slug' => $this->slug,
         ];
     }

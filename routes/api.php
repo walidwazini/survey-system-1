@@ -31,11 +31,15 @@ Route::get('/',function(){
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('/auth/logout',[AuthController::class,'logout']);
-    Route::apiResource('survey',SurveyController::class);
+    // Route::apiResource('survey',SurveyController::class);
 });
 
 Route::group(['prefix' => '/auth'], function() {
     Route::post('/signup', [AuthController::class,'signup']);
     Route::post('/login', [AuthController::class,'login']);
     // Route::get('/logout', [AuthController::class,'logout']);
+});
+
+Route::group(['prefix'=> 'survey'], function() {
+    Route::get('/',[SurveyController::class,'index']);
 });
