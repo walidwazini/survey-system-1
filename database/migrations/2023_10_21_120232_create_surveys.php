@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('image', 255)->nullable();
             $table->string('slug', 1000);
             $table->timestamps();
-            $table->timestamp('expire_date')->nullable();
+            // $table->timestamp('expire_date')->nullable();
+            // $table->date('expire_date')->nullable();
         });
     }
 
