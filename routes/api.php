@@ -42,4 +42,5 @@ Route::group(['prefix' => '/auth'], function() {
 
 Route::group(['prefix'=> 'survey'], function() {
     Route::get('/',[SurveyController::class,'index']);
+    Route::get('/{id}',[SurveyController::class,'show']);
 });

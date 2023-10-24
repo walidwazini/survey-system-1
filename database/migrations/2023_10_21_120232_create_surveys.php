@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            // $table->string('category');
+            $table->string('category')->nullable();
             $table->integer('num_of_question')->default(0);
             $table->string('image', 255)->nullable();
             $table->string('slug', 1000);
             $table->timestamps();
-            // $table->timestamp('expire_date')->nullable();
-            // $table->date('expire_date')->nullable();
+            $table->timestamp('expiry_date')->nullable();
+            // $table->date('expiry_date')->nullable();
         });
     }
 

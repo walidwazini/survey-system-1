@@ -20,4 +20,9 @@ class Survey extends Model {
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
     }
+
+    public function questionsRef(){
+        // TODO: relations with questions
+        // return $this->hasMany(Q);
+    }
 }
