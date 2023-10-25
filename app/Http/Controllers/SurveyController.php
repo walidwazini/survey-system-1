@@ -25,7 +25,7 @@ class SurveyController extends Controller {
   }
 
   public function show($id){
-    $survey = Survey::where('id', $id)->first();
+    $survey = Survey::with(['questionRef'])->where('id', $id)->first();
 
     return response()->json($survey);
   }
